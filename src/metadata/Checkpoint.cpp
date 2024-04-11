@@ -176,6 +176,14 @@ namespace OpenLogReplicator {
                             }
                         } else
                             element->keysStr = "";
+
+                        if (tableElementJson.HasMember("columns")) {
+                            auto& columnsJson = Ctx::getJsonFieldA(configFileName, tableElementJson, "columns");
+                            for (auto i = 0u; i < columnsJson.Size(); ++i) {
+                                auto colName = Ctx::getJsonFieldS(configFileName, JSON_COLUMN_LENGTH, columnsJson, "columns", i);
+                                element->columns.push_back(colName);
+                            }
+                        }
                     }
 
                     for (auto& user: metadata->users) {
@@ -209,7 +217,7 @@ namespace OpenLogReplicator {
                     msgs.push_back("- creating table schema for owner: " + element->owner + " table: " + element->table + " options: " +
                                    std::to_string(element->options));
 
-                metadata->schema->buildMaps(element->owner, element->table, element->keys, element->keysStr, element->conditionStr, element->options, msgs,
+                metadata->schema->buildMaps(element->owner, element->table, element->keys, element->keysStr, element->conditionStr, element->columns, element->options, msgs,
                                             metadata->suppLogDbPrimary, metadata->suppLogDbAll, metadata->defaultCharacterMapId,
                                             metadata->defaultCharacterNcharMapId);
             }

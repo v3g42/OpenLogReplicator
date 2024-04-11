@@ -17,7 +17,9 @@ You should have received a copy of the GNU General Public License
 along with OpenLogReplicator; see the file LICENSE;  If not see
 <http://www.gnu.org/licenses/>.  */
 
+#include <algorithm>
 #include <cstring>
+#include <string>
 #include <vector>
 #include <regex>
 
@@ -2487,8 +2489,8 @@ namespace OpenLogReplicator {
     }
 
     void Schema::buildMaps(const std::string& owner, const std::string& table, const std::vector<std::string>& keys, const std::string& keysStr,
-                           const std::string& conditionStr, typeOptions options, std::vector<std::string>& msgs, bool suppLogDbPrimary, bool suppLogDbAll,
-                           uint64_t defaultCharacterMapId, uint64_t defaultCharacterNcharMapId) {
+                           const std::string& conditionStr, const std::vector<std::string>& columns, typeOptions options, std::vector<std::string>& msgs, bool suppLogDbPrimary, 
+                           bool suppLogDbAll, uint64_t defaultCharacterMapId, uint64_t defaultCharacterNcharMapId) {
         std::regex regexOwner(owner);
         std::regex regexTable(table);
         char sysLobConstraintName[26] = "SYS_LOB0000000000C00000$$";
@@ -2728,13 +2730,18 @@ namespace OpenLogReplicator {
                         }
                     }
                 }
+                bool skip = false;
+                if (!columns.empty()) {
+                    if (std::find(columns.begin(), columns.end(), columnName) == columns.end())
+                        skip = true;
+                }
 
                 columnTmp = new OracleColumn(sysCol->col, guardSeg, sysCol->segCol, columnName,
                                              sysCol->type, sysCol->length, sysCol->precision, sysCol->scale,
                                              numPk, charmapId, sysCol->isNullable(), sysCol->isHidden() &&
                                                                                      !(xmlType && FLAG(REDO_FLAGS_EXPERIMENTAL_XMLTYPE)),
                                              sysCol->isStoredAsLob(), sysCol->isSystemGenerated(), sysCol->isNested(),
-                                             sysCol->isUnused(), sysCol->isAdded(), sysCol->isGuard(), xmlType);
+                                             sysCol->isUnused(), sysCol->isAdded(), sysCol->isGuard(), xmlType, skip);
 
                 tableTmp->addColumn(columnTmp);
                 columnTmp = nullptr;

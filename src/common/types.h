@@ -232,6 +232,7 @@ typedef int64_t time_ut;
 #define JSON_KEY_LENGTH         4096
 #define JSON_CONDITION_LENGTH   16384
 #define JSON_XID_LENGTH         32
+#define JSON_COLUMN_LENGTH      128
 
 #define FB_N                    0x01
 #define FB_P                    0x02

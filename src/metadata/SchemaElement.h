@@ -33,6 +33,7 @@ namespace OpenLogReplicator {
         std::string keysStr;
         std::string conditionStr;
         typeOptions options;
+        std::vector<std::string> columns;
 
         SchemaElement(const char* newOwner, const char* newTable, typeOptions newOptions);
     };
