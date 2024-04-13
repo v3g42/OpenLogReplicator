@@ -89,8 +89,8 @@ namespace OpenLogReplicator {
         void readSystemDictionariesMetadata(Schema* schema, typeScn targetScn);
         void readSystemDictionariesDetails(Schema* schema, typeScn targetScn, typeUser user, typeObj obj);
         void readSystemDictionaries(Schema* schema, typeScn targetScn, const std::string& owner, const std::string& table, typeOptions options);
-        void createSchemaForTable(typeScn targetScn, const std::string& owner, const std::string& table, const std::vector<std::string>& keys,
-                                  const std::string& keysStr, const std::string& conditionStr, typeOptions options, std::vector<std::string>& msgs);
+        void createSchemaForTable(typeScn targetScn, const std::string &owner, const std::string &table, const std::vector<std::string> &keys,
+                                  const std::string &keysStr, const std::string &conditionStr, const std::vector<std::string> &columns, typeOptions options, std::vector<std::string> &msgs);
         void updateOnlineRedoLogData() override;
 
     public:

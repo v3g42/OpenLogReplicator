@@ -144,6 +144,9 @@ namespace OpenLogReplicator {
             return;
         }
         OracleColumn* column = table->columns[col];
+        if (column->skip) {
+            return;
+        }
         if (FLAG(REDO_FLAGS_RAW_COLUMN_DATA)) {
             columnRaw(column->name, data, length);
             return;

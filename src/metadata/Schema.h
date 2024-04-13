@@ -317,8 +317,8 @@ namespace OpenLogReplicator {
         [[nodiscard]] OracleLob* checkLobIndexDict(typeDataObj dataObj) const;
         void dropUnusedMetadata(const std::set<std::string>& users, const std::vector<SchemaElement*>& schemaElements, std::vector<std::string>& msgs);
         void buildMaps(const std::string& owner, const std::string& table, const std::vector<std::string>& keys, const std::string& keysStr,
-                       const std::string& conditionStr, typeOptions options, std::vector<std::string>& msgs, bool suppLogDbPrimary, bool suppLogDbAll,
-                       uint64_t defaultCharacterMapId, uint64_t defaultCharacterNcharMapId);
+                       const std::string& conditionStr, const std::vector<std::string>& columns, typeOptions options, std::vector<std::string>& msgs, 
+                       bool suppLogDbPrimary, bool suppLogDbAll, uint64_t defaultCharacterMapId, uint64_t defaultCharacterNcharMapId);
         void resetTouched();
         void updateXmlCtx();
     };

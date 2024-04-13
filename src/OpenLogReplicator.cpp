@@ -807,7 +807,7 @@ namespace OpenLogReplicator {
                         const rapidjson::Value& tableElementJson = Ctx::getJsonFieldO(configFileName, tableArrayJson, "table", k);
 
                         if ((ctx->disableChecks & DISABLE_CHECKS_JSON_TAGS) == 0) {
-                            static const char* tableElementNames[] = {"owner", "table", "key", "condition", nullptr};
+                            static const char* tableElementNames[] = {"owner", "table", "key", "condition", "columns", nullptr};
                             Ctx::checkJsonFields(configFileName, tableElementJson, tableElementNames);
                         }
 
@@ -830,6 +830,14 @@ namespace OpenLogReplicator {
                             }
                         } else
                             element->keysStr = "";
+
+                        if (tableElementJson.HasMember("columns")) {
+                            auto& columnsJson = Ctx::getJsonFieldA(configFileName, tableElementJson, "columns");
+                            for (auto i = 0u; i < columnsJson.Size(); ++i) {
+                                auto colName = Ctx::getJsonFieldS(configFileName, JSON_COLUMN_LENGTH, columnsJson, "columns", i);
+                                element->columns.push_back(colName);
+                            }
+                        }
 
                         if (tableElementJson.HasMember("condition")) {
                             element->conditionStr = Ctx::getJsonFieldS(configFileName, JSON_CONDITION_LENGTH, tableElementJson,

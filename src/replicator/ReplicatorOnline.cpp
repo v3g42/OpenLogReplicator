@@ -966,7 +966,7 @@ namespace OpenLogReplicator {
             readSystemDictionariesMetadata(metadata->schema, metadata->firstDataScn);
 
             for (const SchemaElement* element: metadata->schemaElements)
-                createSchemaForTable(metadata->firstDataScn, element->owner, element->table, element->keys, element->keysStr, element->conditionStr,
+                createSchemaForTable(metadata->firstDataScn, element->owner, element->table, element->keys, element->keysStr, element->conditionStr, element->columns,
                                      element->options, msgs);
             metadata->schema->resetTouched();
 
@@ -1828,7 +1828,7 @@ namespace OpenLogReplicator {
     }
 
     void ReplicatorOnline::createSchemaForTable(typeScn targetScn, const std::string& owner, const std::string& table, const std::vector<std::string>& keys,
-                                                const std::string& keysStr, const std::string& conditionStr, typeOptions options,
+                                                const std::string& keysStr, const std::string& conditionStr,const std::vector<std::string>& columns, typeOptions options,
                                                 std::vector<std::string>& msgs) {
         if (ctx->trace & TRACE_REDO)
             ctx->logTrace(TRACE_REDO, "creating table schema for owner: " + owner + " table: " + table + " options: " +
@@ -1836,7 +1836,7 @@ namespace OpenLogReplicator {
 
         readSystemDictionaries(metadata->schema, targetScn, owner, table, options);
 
-        metadata->schema->buildMaps(owner, table, keys, keysStr, conditionStr, options, msgs, metadata->suppLogDbPrimary,
+        metadata->schema->buildMaps(owner, table, keys, keysStr, conditionStr, columns, options, msgs, metadata->suppLogDbPrimary,
                                     metadata->suppLogDbAll, metadata->defaultCharacterMapId,
                                     metadata->defaultCharacterNcharMapId);
     }

@@ -2341,8 +2341,8 @@ namespace OpenLogReplicator {
         metadata->schema->dropUnusedMetadata(metadata->users, metadata->schemaElements, msgsDropped);
 
         for (const SchemaElement* element: metadata->schemaElements)
-            metadata->schema->buildMaps(element->owner, element->table, element->keys, element->keysStr, element->conditionStr, element->options, msgsUpdated,
-                                        metadata->suppLogDbPrimary, metadata->suppLogDbAll, metadata->defaultCharacterMapId,
+            metadata->schema->buildMaps(element->owner, element->table, element->keys, element->keysStr, element->conditionStr, element->columns, 
+                                        element->options, msgsUpdated, metadata->suppLogDbPrimary, metadata->suppLogDbAll, metadata->defaultCharacterMapId,
                                         metadata->defaultCharacterNcharMapId);
         metadata->schema->resetTouched();
 
